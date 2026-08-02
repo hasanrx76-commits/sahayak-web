@@ -1,4 +1,4 @@
-const CACHE = 'sahayak-v1'
+const CACHE = 'sahayak-v2'
 const ASSETS = ['/', '/manifest.json', '/favicon.svg', '/icons.svg']
 
 self.addEventListener('install', (e) => {
