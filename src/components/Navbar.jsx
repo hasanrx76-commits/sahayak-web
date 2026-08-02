@@ -15,7 +15,7 @@ export default function Navbar({ view, setView, onOpenSettings }) {
     { key: 'home', label: t('nav.home') },
     { key: 'features', label: t('nav.features') },
     { key: 'assistant', label: t('nav.assistant') },
-    ...(user ? [{ key: 'dashboard', label: t('nav.dashboard') }] : []),
+    { key: 'dashboard', label: t('nav.dashboard') },
   ]
 
   return (
