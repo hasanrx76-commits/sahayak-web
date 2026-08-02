@@ -11,7 +11,7 @@
 //   renders behind all content without blocking scroll/clicks.
 // ============================================================================
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js'
@@ -278,6 +278,7 @@ const PALETTE = [
 
 export default function ParticleUniverse() {
   const mountRef = useRef(null)
+  const [failed, setFailed] = useState(false)
   const { theme } = useApp()
   const themeRef = useRef(theme)
   useEffect(() => {
@@ -290,7 +291,14 @@ export default function ParticleUniverse() {
 
     // ---- Core setup ----
     const q = QUALITY[detectQuality()]
-    const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' })
+    let renderer
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' })
+    } catch (err) {
+      console.error('ParticleUniverse: WebGL is not available, falling back to plain background.', err)
+      setFailed(true)
+      return
+    }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, q.dpr))
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setClearColor(0x000000, 1)
@@ -671,5 +679,6 @@ export default function ParticleUniverse() {
     }
   }, [])
 
+  if (failed) return null
   return <div ref={mountRef} className="network-bg" aria-hidden="true" />
 }
