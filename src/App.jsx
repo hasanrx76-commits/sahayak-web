@@ -7,7 +7,7 @@ import Auth from './components/Auth'
 import Dashboard from './components/Dashboard'
 import Settings from './components/Settings'
 import Footer from './components/Footer'
-import ParticleNetwork from './components/ParticleNetwork'
+import ParticleUniverse from './components/ParticleUniverse'
 import ChatWidget from './components/ChatWidget'
 
 function Shell() {
@@ -19,7 +19,7 @@ function Shell() {
 
   return (
     <>
-      <ParticleNetwork />
+      <ParticleUniverse />
       <div className="content-layer">
         <Navbar view={view} setView={setView} onOpenSettings={() => setSettingsOpen(true)} />
         {view === 'home' && <Home setView={setView} />}
