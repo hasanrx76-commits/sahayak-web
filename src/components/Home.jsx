@@ -1,8 +1,4 @@
-import { Suspense, lazy } from 'react'
 import { useApp } from '../contexts/AppContext'
-import ErrorBoundary from './ErrorBoundary'
-
-const Scene3D = lazy(() => import('./Scene3D'))
 
 const featureIcons = ['🎙️', '🧠', '🌍', '📝', '✅', '🔒', '🌓', '🌐', '📲']
 
@@ -20,13 +16,6 @@ export default function Home({ setView }) {
   return (
     <>
       <section className="hero" id="home">
-        <div className="hero-canvas">
-          <ErrorBoundary>
-            <Suspense fallback={null}>
-              <Scene3D />
-            </Suspense>
-          </ErrorBoundary>
-        </div>
         <div className="container" style={{ width: '100%' }}>
           <div className="hero-content">
             <span className="badge">⚡ {t('hero.badge')}</span>

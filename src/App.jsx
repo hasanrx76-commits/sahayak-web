@@ -7,6 +7,7 @@ import Auth from './components/Auth'
 import Dashboard from './components/Dashboard'
 import Settings from './components/Settings'
 import Footer from './components/Footer'
+import ParticleNetwork from './components/ParticleNetwork'
 
 function Shell() {
   const { authReady, toast } = useApp()
@@ -17,15 +18,18 @@ function Shell() {
 
   return (
     <>
-      <Navbar view={view} setView={setView} onOpenSettings={() => setSettingsOpen(true)} />
-      {view === 'home' && <Home setView={setView} />}
-      {view === 'features' && <Home setView={setView} />}
-      {view === 'assistant' && <Assistant />}
-      {view === 'login' && <Auth setView={setView} />}
-      {view === 'dashboard' && <Dashboard />}
-      <Footer setView={setView} />
-      {settingsOpen && <Settings onClose={() => setSettingsOpen(false)} />}
-      <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
+      <ParticleNetwork />
+      <div className="content-layer">
+        <Navbar view={view} setView={setView} onOpenSettings={() => setSettingsOpen(true)} />
+        {view === 'home' && <Home setView={setView} />}
+        {view === 'features' && <Home setView={setView} />}
+        {view === 'assistant' && <Assistant />}
+        {view === 'login' && <Auth setView={setView} />}
+        {view === 'dashboard' && <Dashboard />}
+        <Footer setView={setView} />
+        {settingsOpen && <Settings onClose={() => setSettingsOpen(false)} />}
+        <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
+      </div>
     </>
   )
 }
