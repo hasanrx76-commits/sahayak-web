@@ -647,9 +647,14 @@ const TOOL_ICON = { converter: '📐', calculator: '🧮', currency: '💱', wea
 const ALL_CATEGORIES = [...PRO_CATEGORIES, ...P2_CATEGORIES, ...P3_CATEGORIES]
 const ALL_TAB = { ...PRO_TAB, ...P2_TAB, ...P3_TAB }
 const ALL_RENDER = { ...PRO_RENDER, ...P2_RENDER, ...P3_RENDER }
+const mergeStrings = (list) => {
+  const out = {}
+  for (const mod of list) for (const [k, v] of Object.entries(mod)) out[k] = { ...(out[k] || {}), ...v }
+  return out
+}
 const ALL_STRINGS = {
-  en: { ...PRO_STRINGS.en, ...P2_STRINGS.en, ...P3_STRINGS.en },
-  hi: { ...PRO_STRINGS.hi, ...P2_STRINGS.hi, ...P3_STRINGS.hi },
+  en: mergeStrings([PRO_STRINGS.en, P2_STRINGS.en, P3_STRINGS.en]),
+  hi: mergeStrings([PRO_STRINGS.hi, P2_STRINGS.hi, P3_STRINGS.hi]),
 }
 const ALL_TOOLS = [...GENERAL, ...ALL_CATEGORIES.flatMap((c) => c.tools)]
 
