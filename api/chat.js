@@ -108,6 +108,7 @@ export default async function handler(req, res) {
   const systemPrompt = buildSystemPrompt()
   const geminiKey = process.env.GEMINI_API_KEY
   const openaiKey = process.env.OPENAI_API_KEY
+  const groqKey = process.env.GROQ_API_KEY
 
   try {
     // Google Gemini (free tier recommended)
@@ -126,6 +127,26 @@ export default async function handler(req, res) {
           })),
           systemInstruction: { parts: [{ text: systemPrompt }] },
           generationConfig: { temperature: 0.7, maxOutputTokens: 800 },
+        }),
+      })
+      return forwardStream(upstream, res)
+    }
+
+    // Groq — free, no credit card required, OpenAI-compatible streaming
+    if (groqKey) {
+      const model = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile'
+      const upstream = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${groqKey}`,
+        },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: 'system', content: systemPrompt }, ...safe],
+          stream: true,
+          temperature: 0.7,
+          max_tokens: 800,
         }),
       })
       return forwardStream(upstream, res)
@@ -152,9 +173,8 @@ export default async function handler(req, res) {
 
     return res.status(503).json({
       error:
-        'The AI backend is not configured yet. Add GEMINI_API_KEY (free from ' +
-        'aistudio.google.com) or OPENAI_API_KEY in Vercel → Settings → ' +
-        'Environment Variables, then redeploy.',
+        'The AI backend is not configured yet. Add a free GROQ_API_KEY (console.groq.com) ' +
+        'or OPENAI_API_KEY in Vercel → Settings → Environment Variables, then redeploy.',
     })
   } catch (err) {
     console.error('Chat handler error:', err)

@@ -23,14 +23,14 @@ npm run dev
 
 ## 💬 AI Chatbot setup (secure backend)
 
-The chat uses a Vercel serverless function (`api/chat.js`) so **API keys stay hidden** on the server. It supports Gemini (free) or OpenAI.
+The chat uses a Vercel serverless function (`api/chat.js`) so **API keys stay hidden** on the server. It supports Groq (recommended, free), Gemini, or OpenAI.
 
-1. Get a free Gemini key at [aistudio.google.com](https://aistudio.google.com) → **Get API key**
+1. **Groq (recommended):** get a free key at [console.groq.com](https://console.groq.com) → API Keys → Create (no credit card needed)
 2. In Vercel → project → **Settings → Environment Variables**, add:
    ```
-   GEMINI_API_KEY=<your free key>
+   GROQ_API_KEY=<your free key>
    ```
-   (or `OPENAI_API_KEY` + optionally `OPENAI_MODEL` / `GEMINI_MODEL`)
+   (or `GEMINI_API_KEY` / `OPENAI_API_KEY`; optionally set `GROQ_MODEL` / `OPENAI_MODEL`)
 3. Redeploy (push to git). The floating chat button now answers questions about the website.
 
 Backend features: per-IP rate limiting (20 req/min), input validation, message-length clamps, streaming SSE, graceful errors. Answers are limited to the site knowledge base (`api/lib/knowledge.js`) and it politely declines when it does not know.
