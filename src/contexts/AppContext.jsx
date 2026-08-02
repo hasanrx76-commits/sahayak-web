@@ -50,6 +50,11 @@ export function AppProvider({ children }) {
   }, [geminiKey])
 
   useEffect(() => {
+    if (!auth) {
+      setUser(null)
+      setAuthReady(true)
+      return
+    }
     const unsub = onAuthStateChanged(auth, (u) => {
       setUser(u)
       setAuthReady(true)
@@ -68,7 +73,8 @@ export function AppProvider({ children }) {
   }, [lang])
 
   const logout = useCallback(async () => {
-    await signOut(auth)
+    if (auth) await signOut(auth)
+    setUser(null)
     showToast(t('auth.logout'))
   }, [showToast, t])
   const value = {

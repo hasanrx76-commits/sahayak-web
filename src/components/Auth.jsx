@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useApp } from '../contexts/AppContext'
 import { auth, googleProvider } from '../firebase'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
-
 export default function Auth({ setView }) {
   const { t, lang, user, showToast } = useApp()
   const [mode, setMode] = useState('login')
@@ -46,6 +45,10 @@ export default function Auth({ setView }) {
     e.preventDefault()
     setError('')
     if (!validate()) return
+    if (!auth) {
+      setError(lang === 'hi' ? 'Firebase configured nahi hai. README dekho.' : 'Firebase is not configured yet. Check the README.')
+      return
+    }
     setLoading(true)
     try {
       if (mode === 'login') {
