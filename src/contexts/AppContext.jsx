@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
 import { getSessionUser, subscribeLocalAuth, localSignOut } from '../lib/localAuth'
+import { initStorage } from '../data'
 import { translations } from '../i18n'
 
 const AppContext = createContext(null)
@@ -58,8 +59,10 @@ export function AppProvider({ children }) {
       })
       return unsub
     }
-    setUser(getSessionUser())
-    setAuthReady(true)
+    initStorage().then(() => {
+      setUser(getSessionUser())
+      setAuthReady(true)
+    })
     return subscribeLocalAuth(setUser)
   }, [])
 
