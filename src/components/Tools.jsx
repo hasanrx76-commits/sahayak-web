@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useApp } from '../contexts/AppContext'
 import { PRO_CATEGORIES, PRO_RENDER, PRO_TAB, PRO_STRINGS } from './proTools'
+import { P2_CATEGORIES, P2_RENDER, P2_TAB, P2_STRINGS } from './proTools2'
+import { P3_CATEGORIES, P3_RENDER, P3_TAB, P3_STRINGS } from './proTools3'
 
 const S = {
   en: {
@@ -642,19 +644,28 @@ function QuoteBox({ s, lang }) {
 
 const GENERAL = ['converter', 'calculator', 'currency', 'weather', 'dictionary', 'pomodoro', 'tip', 'bmi', 'case', 'random', 'datetime', 'password', 'counter', 'stopwatch', 'quote']
 const TOOL_ICON = { converter: '📐', calculator: '🧮', currency: '💱', weather: '🌦', dictionary: '📖', pomodoro: '🎯', tip: '🍽', bmi: '⚖️', case: '🔠', random: '🎲', datetime: '📅', password: '🔐', counter: '✍️', stopwatch: '⏱️', quote: '💬' }
-const ALL_TOOLS = [...GENERAL, ...PRO_CATEGORIES.flatMap((c) => c.tools)]
+const ALL_CATEGORIES = [...PRO_CATEGORIES, ...P2_CATEGORIES, ...P3_CATEGORIES]
+const ALL_TAB = { ...PRO_TAB, ...P2_TAB, ...P3_TAB }
+const ALL_RENDER = { ...PRO_RENDER, ...P2_RENDER, ...P3_RENDER }
+const ALL_STRINGS = {
+  en: { ...PRO_STRINGS.en, ...P2_STRINGS.en, ...P3_STRINGS.en },
+  hi: { ...PRO_STRINGS.hi, ...P2_STRINGS.hi, ...P3_STRINGS.hi },
+}
+const ALL_TOOLS = [...GENERAL, ...ALL_CATEGORIES.flatMap((c) => c.tools)]
 
 export default function Tools({ initialTool }) {
   const { lang } = useApp()
-  const s = { ...S[lang] || S.en, ...PRO_STRINGS[lang] || PRO_STRINGS.en, tabs: { ...(S[lang] || S.en).tabs, ...(PRO_STRINGS[lang] || PRO_STRINGS.en).tabs } }
+  const base = S[lang] || S.en
+  const extra = ALL_STRINGS[lang] || ALL_STRINGS.en
+  const s = { ...base, ...extra, tabs: { ...base.tabs, ...extra.tabs }, units: { ...base.units, ...extra.units } }
   const [tab, setTab] = useState(ALL_TOOLS.includes(initialTool) ? initialTool : 'converter')
   useEffect(() => {
     if (ALL_TOOLS.includes(initialTool)) setTab(initialTool)
   }, [initialTool])
 
   const render = () => {
-    if (PRO_RENDER[tab]) {
-      const C = PRO_RENDER[tab]
+    if (ALL_RENDER[tab]) {
+      const C = ALL_RENDER[tab]
       return <C s={s} lang={lang} />
     }
     switch (tab) {
@@ -678,7 +689,7 @@ export default function Tools({ initialTool }) {
 
   const categories = [
     { id: 'general', icon: '🧰', label: s.cats.general, tools: GENERAL },
-    ...PRO_CATEGORIES.map((c) => ({ ...c, label: s.cats[c.id] })),
+    ...ALL_CATEGORIES.map((c) => ({ ...c, label: s.cats[c.id] })),
   ]
 
   return (
@@ -693,7 +704,7 @@ export default function Tools({ initialTool }) {
               <div className="tool-cat-tabs">
                 {cat.tools.map((id) => (
                   <button key={id} className={`tab ${tab === id ? 'active' : ''}`} onClick={() => setTab(id)}>
-                    {TOOL_ICON[id] || PRO_TAB[id]} {s.tabs[id]}
+                    {TOOL_ICON[id] || ALL_TAB[id]} {s.tabs[id]}
                   </button>
                 ))}
               </div>

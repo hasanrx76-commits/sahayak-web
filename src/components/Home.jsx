@@ -1,7 +1,7 @@
 import { useApp } from '../contexts/AppContext'
 import { usePwaInstall } from '../hooks/usePwaInstall'
 
-const featureIcons = ['🎙️', '🧠', '🌍', '📝', '✅', '🔒', '🌓', '🌐', '📲', '🧰', '🧮', '💱', '🌦', '📖', '🎯', '🍽', '⚖️', '🔠', '🎲', '📅', '🧱', '🏗️', '🪣', '🗺️', '🎛️', '⚡', '🔩', '🔌', '🔥', '💪', '💧', '❤️', '🏦', '📈', '🧾', '💹', '💯', '🎂', '📆', '⛽']
+const featureIcons = ['🎙️', '🧠', '🌍', '📝', '✅', '🔒', '🌓', '🌐', '📲', '🧰', '🧮', '💱', '🌦', '📖', '🎯', '🍽', '⚖️', '🔠', '🎲', '📅', '🧱', '🏗️', '🪣', '🗺️', '🎛️', '⚡', '🔩', '🔌', '🔥', '💪', '💧', '❤️', '🏦', '📈', '🧾', '💹', '💯', '🎂', '📆', '⛽', '🎓', '📊', '➗', '🔢', '🏛️', '🔤', '📐', '🍕', '👩‍🍳', '🌡️', '🥄', '🍚', '🕐', '🧭', '💼', '🚗', '📦', '💰', '🏷️', '⚖️', '🎯', '💵', '🔎', '🤝', '💳', '🥗', '🏋️', '🏃', '👟', '⏳', '🧮', '💽', '🎨', '🔣', '🅱️', '🔗', '📄', '🕸️', '💾', '🌱', '🌾', '🧪', '🚜', '🥁', '🎵', '🎼', '🎶', '💡', '🧊', '😴']
 
 export default function Home({ setView, onOpenDashboard, onOpenTools }) {
   const { t, lang, setLang, theme, setTheme, showToast } = useApp()
@@ -62,10 +62,60 @@ export default function Home({ setView, onOpenDashboard, onOpenTools }) {
     () => openTools('age'),
     () => openTools('datediff'),
     () => openTools('fuel'),
+    () => openTools('gpa'),
+    () => openTools('stat'),
+    () => openTools('lcmhcf'),
+    () => openTools('prime'),
+    () => openTools('roman'),
+    () => openTools('words'),
+    () => openTools('quad'),
+    () => openTools('fraction'),
+    () => openTools('recipe'),
+    () => openTools('oven'),
+    () => openTools('measure'),
+    () => openTools('rice'),
+    () => openTools('timezone'),
+    () => openTools('distance'),
+    () => openTools('budget'),
+    () => openTools('speed'),
+    () => openTools('volume'),
+    () => openTools('profit'),
+    () => openTools('markup'),
+    () => openTools('breakeven'),
+    () => openTools('roi'),
+    () => openTools('change'),
+    () => openTools('unitprice'),
+    () => openTools('commission'),
+    () => openTools('billsplit'),
+    () => openTools('macros'),
+    () => openTools('onerm'),
+    () => openTools('pace'),
+    () => openTools('steps'),
+    () => openTools('deficit'),
+    () => openTools('bodyfat'),
+    () => openTools('baseconv'),
+    () => openTools('hexrgb'),
+    () => openTools('ascii'),
+    () => openTools('base64'),
+    () => openTools('urlcode'),
+    () => openTools('jsonfmt'),
+    () => openTools('subnet'),
+    () => openTools('storage'),
+    () => openTools('seed'),
+    () => openTools('fertilizer'),
+    () => openTools('pesticide'),
+    () => openTools('yield'),
+    () => openTools('metronome'),
+    () => openTools('bpmms'),
+    () => openTools('notefreq'),
+    () => openTools('interval'),
+    () => openTools('electricity'),
+    () => openTools('appliance'),
+    () => openTools('sleep'),
   ]
 
   const features = []
-  for (let i = 1; i <= 40; i++) {
+  for (let i = 1; i <= 90; i++) {
     features.push({
       icon: featureIcons[i - 1],
       title: t(`features.f${i}t`),

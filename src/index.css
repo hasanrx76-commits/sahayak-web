@@ -1302,10 +1302,12 @@ textarea {
   font-size: 14px;
   width: 100%;
 }
-.tool-card input[type='date'] {
+.tool-card input[type='date'],
+.tool-card input[type='time'] {
   color-scheme: dark;
 }
-[data-theme='light'] .tool-card input[type='date'] {
+[data-theme='light'] .tool-card input[type='date'],
+[data-theme='light'] .tool-card input[type='time'] {
   color-scheme: light;
 }
 
