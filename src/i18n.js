@@ -1,6 +1,6 @@
 export const translations = {
   en: {
-    nav: { home: 'Home', features: 'Features', assistant: 'Assistant', dashboard: 'My Dashboard' },
+    nav: { home: 'Home', features: 'Features', assistant: 'Assistant', dashboard: 'My Dashboard', tools: 'Tools' },
     hero: {
       badge: '100% Free AI Assistant',
       title: 'Meet Sahayak,\nyour smart AI companion',
@@ -25,13 +25,15 @@ export const translations = {
       f5t: 'Task Manager',
       f5d: 'Create todos, mark them done, stay productive. Your tasks are saved forever.',
       f6t: 'Private & Secure',
-      f6d: 'Sign in securely with Google or email. Your data is stored privately with Firebase Auth & Firestore.',
+      f6d: 'Sign in with email and keep your notes in your own private GitHub storage — no one else can see them.',
       f7t: 'Dark / Light Mode',
       f7d: 'Switch themes with one tap. A beautiful experience whether it is day or night.',
       f8t: 'Hindi + English',
       f8d: 'Bilingual interface. Use Sahayak in Hindi or English — your choice.',
       f9t: 'Installable App',
       f9d: 'Install Sahayak as a native app on your phone or computer. Works like magic, even offline.',
+      f10t: 'Mini Tools',
+      f10d: 'A built-in toolbox — unit converter, password generator, text counter, stopwatch and more. Works offline.',
     },
     assistant: {
       title: 'Talk to Sahayak',
@@ -104,7 +106,7 @@ export const translations = {
     },
   },
   hi: {
-    nav: { home: 'होम', features: 'फीचर्स', assistant: 'असिस्टेंट', dashboard: 'मेरा डैशबोर्ड' },
+    nav: { home: 'होम', features: 'फीचर्स', assistant: 'असिस्टेंट', dashboard: 'मेरा डैशबोर्ड', tools: 'टूल्स' },
     hero: {
       badge: '100% Free AI Assistant',
       title: 'मिलिए Sahayak से,\nआपका स्मार्ट AI साथी',
@@ -129,13 +131,15 @@ export const translations = {
       f5t: 'टास्क मैनेजर',
       f5d: 'टू-डू बनाएं, पूरे करें, प्रोडक्टिव रहें। आपके काम हमेशा सेव रहते हैं।',
       f6t: 'प्राइवेट और सुरक्षित',
-      f6d: 'Google या ईमेल से सुरक्षित साइन-इन करें। आपका डेटा Firebase में सुरक्षित।',
+      f6d: 'ईमेल से साइन-इन करें और अपने नोट्स अपनी प्राइवेट GitHub स्टोरेज में रखें — कोई और नहीं देख सकता।',
       f7t: 'डार्क / लाइट मोड',
       f7d: 'एक टैप से थीम बदलें। दिन-रात सुंदर अनुभव।',
       f8t: 'हिंदी + इंग्लिश',
       f8d: 'द्विभाषी इंटरफेस। हिंदी या इंग्लिश में उपयोग करें।',
       f9t: 'इंस्टॉल करने योग्य',
       f9d: 'Sahayak को नेटिव ऐप की तरह इंस्टॉल करें। ऑफ़लाइन भी चले।',
+      f10t: 'मिनी टूल्स',
+      f10d: 'बिल्ट-इन टूलबॉक्स — यूनिट कन्वर्टर, पासवर्ड जनरेटर, टेक्स्ट काउंटर, स्टॉपवॉच और और भी। ऑफ़लाइन चले।',
     },
     assistant: {
       title: 'Sahayak से बात करें',

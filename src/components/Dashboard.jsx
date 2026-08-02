@@ -18,12 +18,16 @@ function useItems(kind) {
   return { items, setItems, refresh, uid }
 }
 
-export default function Dashboard() {
+export default function Dashboard({ initialTab }) {
   const { t, user } = useApp()
-  const [tab, setTab] = useState('todos')
+  const [tab, setTab] = useState(initialTab || 'todos')
   const { items: todos, setItems: setTodos, refresh: refreshTodos, uid } = useItems('todos')
   const { items: notes, setItems: setNotes, refresh: refreshNotes } = useItems('notes')
   const [todoText, setTodoText] = useState('')
+
+  useEffect(() => {
+    if (initialTab) setTab(initialTab)
+  }, [initialTab])
 
   const toggleTodo = async (todo) => {
     await updateItem('todos', uid, todo.id, { done: !todo.done })

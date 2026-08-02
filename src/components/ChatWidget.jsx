@@ -32,6 +32,13 @@ export default function ChatWidget() {
     openRef.current = open
   }, [open])
 
+  // Allow other parts of the app (e.g. the Smart Chat feature card) to open the chat.
+  useEffect(() => {
+    const onOpen = () => setOpen(true)
+    window.addEventListener('sahayak-open-chat', onOpen)
+    return () => window.removeEventListener('sahayak-open-chat', onOpen)
+  }, [])
+
   // Auto-scroll to the newest message.
   useEffect(() => {
     const el = bodyRef.current

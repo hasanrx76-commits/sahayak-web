@@ -1,15 +1,41 @@
 import { useApp } from '../contexts/AppContext'
+import { usePwaInstall } from '../hooks/usePwaInstall'
 
-const featureIcons = ['🎙️', '🧠', '🌍', '📝', '✅', '🔒', '🌓', '🌐', '📲']
+const featureIcons = ['🎙️', '🧠', '🌍', '📝', '✅', '🔒', '🌓', '🌐', '📲', '🧰']
 
-export default function Home({ setView }) {
-  const { t } = useApp()
+export default function Home({ setView, onOpenDashboard }) {
+  const { t, lang, setLang, theme, setTheme, showToast } = useApp()
+  const { canInstall, promptInstall } = usePwaInstall()
+
+  const openChat = () => window.dispatchEvent(new CustomEvent('sahayak-open-chat'))
+
+  const installApp = async () => {
+    const ok = await promptInstall()
+    if (!ok) {
+      showToast(lang === 'hi' ? 'ब्राउज़र के मेन्यू से "Install" करें।' : 'Install from your browser menu instead.')
+    }
+  }
+
+  const actions = [
+    () => setView('assistant'),
+    openChat,
+    () => showToast(lang === 'hi' ? '✨ 3D बैकग्राउंड पहले से एक्टिव है!' : '✨ The 3D background is already active!'),
+    () => onOpenDashboard('notes'),
+    () => onOpenDashboard('todos'),
+    () => setView('login'),
+    () => setTheme(theme === 'dark' ? 'light' : 'dark'),
+    () => setLang(lang === 'en' ? 'hi' : 'en'),
+    installApp,
+    () => setView('tools'),
+  ]
+
   const features = []
-  for (let i = 1; i <= 9; i++) {
+  for (let i = 1; i <= 10; i++) {
     features.push({
       icon: featureIcons[i - 1],
       title: t(`features.f${i}t`),
       desc: t(`features.f${i}d`),
+      onClick: actions[i - 1],
     })
   }
 
@@ -53,10 +79,11 @@ export default function Home({ setView }) {
           <p className="section-sub">{t('features.sub')}</p>
           <div className="grid">
             {features.map((f, i) => (
-              <div key={i} className="card feature-card">
+              <div key={i} className="card feature-card" onClick={f.onClick} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && f.onClick()}>
                 <div className="feature-icon">{f.icon}</div>
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
+                <span className="feature-go">Open →</span>
               </div>
             ))}
           </div>
