@@ -1,0 +1,25 @@
+{
+  "name": "Sahayak — Smart AI Assistant",
+  "short_name": "Sahayak",
+  "description": "Aapka smart AI assistant. Voice, notes, tasks — sab kuch free.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f0a2e",
+  "theme_color": "#0f0a2e",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
