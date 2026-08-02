@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useApp } from '../contexts/AppContext'
 import { auth, googleProvider } from '../firebase'
+import { localSignIn, localSignUp } from '../lib/localAuth'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, updateProfile } from 'firebase/auth'
 export default function Auth({ setView }) {
   const { t, lang, user, showToast } = useApp()
@@ -45,18 +46,22 @@ export default function Auth({ setView }) {
     e.preventDefault()
     setError('')
     if (!validate()) return
-    if (!auth) {
-      setError(lang === 'hi' ? 'Firebase configured nahi hai. README dekho.' : 'Firebase is not configured yet. Check the README.')
-      return
-    }
     setLoading(true)
     try {
-      if (mode === 'login') {
-        await signInWithEmailAndPassword(auth, email, password)
+      if (auth) {
+        if (mode === 'login') {
+          await signInWithEmailAndPassword(auth, email, password)
+          showToast(t('auth.loginOk'))
+        } else {
+          const cred = await createUserWithEmailAndPassword(auth, email, password)
+          if (name) await updateProfile(cred.user, { displayName: name })
+          showToast(t('auth.welcome'))
+        }
+      } else if (mode === 'login') {
+        await localSignIn(email, password)
         showToast(t('auth.loginOk'))
       } else {
-        const cred = await createUserWithEmailAndPassword(auth, email, password)
-        if (name) await updateProfile(cred.user, { displayName: name })
+        await localSignUp(name, email, password)
         showToast(t('auth.welcome'))
       }
     } catch (err) {
@@ -67,6 +72,7 @@ export default function Auth({ setView }) {
   }
 
   const handleGoogle = async () => {
+    if (!auth) return
     setError('')
     setLoading(true)
     try {
@@ -86,6 +92,12 @@ export default function Auth({ setView }) {
           <div className="card auth-card">
             <div className="auth-title">{mode === 'login' ? t('auth.login') : t('auth.signup')}</div>
             <div className="auth-sub">{mode === 'login' ? t('auth.loginSub') : t('auth.signupSub')}</div>
+
+            {!auth && (
+              <div style={{ color: 'var(--text-dim)', fontSize: 13, marginBottom: 10, lineHeight: 1.5 }}>
+                🔒 {lang === 'hi' ? 'खाता इसी डिवाइस पर सेव रहेगा।' : 'Your account is saved on this device only.'}
+              </div>
+            )}
 
             {error && <div className="auth-error">{error}</div>}
 

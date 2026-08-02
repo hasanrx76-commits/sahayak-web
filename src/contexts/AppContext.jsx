@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from '../firebase'
+import { getSessionUser, subscribeLocalAuth, localSignOut } from '../lib/localAuth'
 import { translations } from '../i18n'
 
 const AppContext = createContext(null)
@@ -50,16 +51,16 @@ export function AppProvider({ children }) {
   }, [geminiKey])
 
   useEffect(() => {
-    if (!auth) {
-      setUser(null)
-      setAuthReady(true)
-      return
+    if (auth) {
+      const unsub = onAuthStateChanged(auth, (u) => {
+        setUser(u)
+        setAuthReady(true)
+      })
+      return unsub
     }
-    const unsub = onAuthStateChanged(auth, (u) => {
-      setUser(u)
-      setAuthReady(true)
-    })
-    return unsub
+    setUser(getSessionUser())
+    setAuthReady(true)
+    return subscribeLocalAuth(setUser)
   }, [])
 
   const showToast = useCallback((msg) => {
@@ -74,6 +75,7 @@ export function AppProvider({ children }) {
 
   const logout = useCallback(async () => {
     if (auth) await signOut(auth)
+    else localSignOut()
     setUser(null)
     showToast(t('auth.logout'))
   }, [showToast, t])
