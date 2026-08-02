@@ -1219,11 +1219,175 @@ textarea {
   margin: 12px 0 16px;
   min-height: 72px;
 }
+.tool-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 22px 0 26px;
+}
+.tool-tabs .tab {
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.tool-tabs .tab:hover {
+  border-color: var(--accent);
+}
+.tool-tabs .tab.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  border-color: transparent;
+}
+.tool-panel {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Calculator */
+.calc-display {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 26px;
+  font-family: 'Courier New', monospace;
+  text-align: right;
+  margin-bottom: 10px;
+  min-height: 54px;
+  overflow-x: auto;
+}
+.calc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.calc-btn {
+  padding: 14px 0;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 17px;
+  font-weight: 600;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+.calc-btn:hover {
+  background: var(--border);
+}
+.calc-btn:active {
+  transform: scale(0.95);
+}
+.calc-btn.accent {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  grid-row: span 2;
+}
+
+/* Weather */
+.weather-result {
+  margin-top: 14px;
+}
+.weather-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+/* BMI */
+.bmi-result {
+  margin-top: 14px;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Case converter */
+.case-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.case-btns .btn {
+  padding: 9px 14px;
+  font-size: 13px;
+  flex: 1;
+  min-width: 110px;
+}
+
+/* Random generator */
+.random-row {
+  margin-bottom: 4px;
+}
+.rand-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 8px;
+  align-items: end;
+}
+.rand-item b {
+  font-size: 22px;
+  text-align: center;
+  padding-bottom: 8px;
+  color: var(--accent);
+}
+.rand-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+.rand-btns .btn {
+  padding: 9px 14px;
+  font-size: 13px;
+}
+.swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  display: inline-block;
+}
+.rand-name {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.rand-name input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 14px;
+  min-width: 0;
+}
+
 @media (max-width: 520px) {
   .counter-stats {
     grid-template-columns: repeat(2, 1fr);
   }
   .tool-grid {
     grid-template-columns: 1fr;
+  }
+  .rand-item {
+    grid-template-columns: 1fr 1fr;
+  }
+  .rand-item .btn {
+    grid-column: span 2;
   }
 }

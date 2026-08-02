@@ -1,11 +1,11 @@
 import { useApp } from '../contexts/AppContext'
 import { usePwaInstall } from '../hooks/usePwaInstall'
 
-const featureIcons = ['🎙️', '🧠', '🌍', '📝', '✅', '🔒', '🌓', '🌐', '📲', '🧰']
+const featureIcons = ['🎙️', '🧠', '🌍', '📝', '✅', '🔒', '🌓', '🌐', '📲', '🧰', '🧮', '💱', '🌦', '📖', '🎯', '🍽', '⚖️', '🔠', '🎲', '📅']
 
-export default function Home({ setView, onOpenDashboard }) {
+export default function Home({ setView, onOpenDashboard, onOpenTools }) {
   const { t, lang, setLang, theme, setTheme, showToast } = useApp()
-  const { canInstall, promptInstall } = usePwaInstall()
+  const { promptInstall } = usePwaInstall()
 
   const openChat = () => window.dispatchEvent(new CustomEvent('sahayak-open-chat'))
 
@@ -14,6 +14,11 @@ export default function Home({ setView, onOpenDashboard }) {
     if (!ok) {
       showToast(lang === 'hi' ? 'ब्राउज़र के मेन्यू से "Install" करें।' : 'Install from your browser menu instead.')
     }
+  }
+
+  const openTools = (tool) => {
+    if (onOpenTools) onOpenTools(tool)
+    else setView('tools')
   }
 
   const actions = [
@@ -26,11 +31,21 @@ export default function Home({ setView, onOpenDashboard }) {
     () => setTheme(theme === 'dark' ? 'light' : 'dark'),
     () => setLang(lang === 'en' ? 'hi' : 'en'),
     installApp,
-    () => setView('tools'),
+    () => openTools('converter'),
+    () => openTools('calculator'),
+    () => openTools('currency'),
+    () => openTools('weather'),
+    () => openTools('dictionary'),
+    () => openTools('pomodoro'),
+    () => openTools('tip'),
+    () => openTools('bmi'),
+    () => openTools('case'),
+    () => openTools('random'),
+    () => openTools('datetime'),
   ]
 
   const features = []
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 20; i++) {
     features.push({
       icon: featureIcons[i - 1],
       title: t(`features.f${i}t`),

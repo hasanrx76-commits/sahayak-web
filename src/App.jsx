@@ -16,6 +16,7 @@ function Shell() {
   const [view, setView] = useState('home')
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [dashTab, setDashTab] = useState(null)
+  const [toolsTab, setToolsTab] = useState(null)
 
   if (!authReady) return null
 
@@ -24,17 +25,22 @@ function Shell() {
     setView('dashboard')
   }
 
+  const openTools = (tool) => {
+    setToolsTab(tool)
+    setView('tools')
+  }
+
   return (
     <>
       <ParticleUniverse />
       <div className="content-layer">
         <Navbar view={view} setView={setView} onOpenSettings={() => setSettingsOpen(true)} />
-        {view === 'home' && <Home setView={setView} onOpenDashboard={openDashboard} />}
-        {view === 'features' && <Home setView={setView} onOpenDashboard={openDashboard} />}
+        {view === 'home' && <Home setView={setView} onOpenDashboard={openDashboard} onOpenTools={openTools} />}
+        {view === 'features' && <Home setView={setView} onOpenDashboard={openDashboard} onOpenTools={openTools} />}
         {view === 'assistant' && <Assistant />}
         {view === 'login' && <Auth setView={setView} />}
         {view === 'dashboard' && <Dashboard initialTab={dashTab} />}
-        {view === 'tools' && <Tools />}
+        {view === 'tools' && <Tools initialTool={toolsTab} />}
         <Footer setView={setView} />
         <ChatWidget />
         {settingsOpen && <Settings onClose={() => setSettingsOpen(false)} />}
