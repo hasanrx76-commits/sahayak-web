@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useApp } from '../contexts/AppContext'
+import { PRO_CATEGORIES, PRO_RENDER, PRO_TAB, PRO_STRINGS } from './proTools'
 
 const S = {
   en: {
@@ -639,18 +640,23 @@ function QuoteBox({ s, lang }) {
 
 // ---------- Hub ----------
 
-const TOOL_ID = ['converter', 'calculator', 'currency', 'weather', 'dictionary', 'pomodoro', 'tip', 'bmi', 'case', 'random', 'datetime', 'password', 'counter', 'stopwatch', 'quote']
+const GENERAL = ['converter', 'calculator', 'currency', 'weather', 'dictionary', 'pomodoro', 'tip', 'bmi', 'case', 'random', 'datetime', 'password', 'counter', 'stopwatch', 'quote']
 const TOOL_ICON = { converter: '📐', calculator: '🧮', currency: '💱', weather: '🌦', dictionary: '📖', pomodoro: '🎯', tip: '🍽', bmi: '⚖️', case: '🔠', random: '🎲', datetime: '📅', password: '🔐', counter: '✍️', stopwatch: '⏱️', quote: '💬' }
+const ALL_TOOLS = [...GENERAL, ...PRO_CATEGORIES.flatMap((c) => c.tools)]
 
 export default function Tools({ initialTool }) {
   const { lang } = useApp()
-  const s = S[lang] || S.en
-  const [tab, setTab] = useState(TOOL_ID.includes(initialTool) ? initialTool : 'converter')
+  const s = { ...S[lang] || S.en, ...PRO_STRINGS[lang] || PRO_STRINGS.en, tabs: { ...(S[lang] || S.en).tabs, ...(PRO_STRINGS[lang] || PRO_STRINGS.en).tabs } }
+  const [tab, setTab] = useState(ALL_TOOLS.includes(initialTool) ? initialTool : 'converter')
   useEffect(() => {
-    if (TOOL_ID.includes(initialTool)) setTab(initialTool)
+    if (ALL_TOOLS.includes(initialTool)) setTab(initialTool)
   }, [initialTool])
 
   const render = () => {
+    if (PRO_RENDER[tab]) {
+      const C = PRO_RENDER[tab]
+      return <C s={s} lang={lang} />
+    }
     switch (tab) {
       case 'converter': return <UnitConverter s={s} />
       case 'calculator': return <Calculator s={s} />
@@ -670,16 +676,28 @@ export default function Tools({ initialTool }) {
     }
   }
 
+  const categories = [
+    { id: 'general', icon: '🧰', label: s.cats.general, tools: GENERAL },
+    ...PRO_CATEGORIES.map((c) => ({ ...c, label: s.cats[c.id] })),
+  ]
+
   return (
     <section className="section" style={{ paddingTop: 110, minHeight: '75vh' }}>
       <div className="container">
         <h2 className="section-title">🧰 {s.title}</h2>
         <p className="section-sub">{s.sub}</p>
         <div className="tool-tabs">
-          {TOOL_ID.map((id) => (
-            <button key={id} className={`tab ${tab === id ? 'active' : ''}`} onClick={() => setTab(id)}>
-              {TOOL_ICON[id]} {s.tabs[id]}
-            </button>
+          {categories.map((cat) => (
+            <div key={cat.id} className="tool-cat">
+              <div className="tool-cat-label">{cat.icon} {cat.label}</div>
+              <div className="tool-cat-tabs">
+                {cat.tools.map((id) => (
+                  <button key={id} className={`tab ${tab === id ? 'active' : ''}`} onClick={() => setTab(id)}>
+                    {TOOL_ICON[id] || PRO_TAB[id]} {s.tabs[id]}
+                  </button>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
         <div className="tool-panel">{render()}</div>

@@ -1,7 +1,7 @@
 import { useApp } from '../contexts/AppContext'
 import { usePwaInstall } from '../hooks/usePwaInstall'
 
-const featureIcons = ['🎙️', '🧠', '🌍', '📝', '✅', '🔒', '🌓', '🌐', '📲', '🧰', '🧮', '💱', '🌦', '📖', '🎯', '🍽', '⚖️', '🔠', '🎲', '📅']
+const featureIcons = ['🎙️', '🧠', '🌍', '📝', '✅', '🔒', '🌓', '🌐', '📲', '🧰', '🧮', '💱', '🌦', '📖', '🎯', '🍽', '⚖️', '🔠', '🎲', '📅', '🧱', '🏗️', '🪣', '🗺️', '🎛️', '⚡', '🔩', '🔌', '🔥', '💪', '💧', '❤️', '🏦', '📈', '🧾', '💹', '💯', '🎂', '📆', '⛽']
 
 export default function Home({ setView, onOpenDashboard, onOpenTools }) {
   const { t, lang, setLang, theme, setTheme, showToast } = useApp()
@@ -42,10 +42,30 @@ export default function Home({ setView, onOpenDashboard, onOpenTools }) {
     () => openTools('case'),
     () => openTools('random'),
     () => openTools('datetime'),
+    () => openTools('brick'),
+    () => openTools('concrete'),
+    () => openTools('paint'),
+    () => openTools('land'),
+    () => openTools('resistor'),
+    () => openTools('ohm'),
+    () => openTools('steel'),
+    () => openTools('power'),
+    () => openTools('bmr'),
+    () => openTools('idealwt'),
+    () => openTools('water'),
+    () => openTools('heartrate'),
+    () => openTools('emi'),
+    () => openTools('sip'),
+    () => openTools('gst'),
+    () => openTools('interest'),
+    () => openTools('percent'),
+    () => openTools('age'),
+    () => openTools('datediff'),
+    () => openTools('fuel'),
   ]
 
   const features = []
-  for (let i = 1; i <= 20; i++) {
+  for (let i = 1; i <= 40; i++) {
     features.push({
       icon: featureIcons[i - 1],
       title: t(`features.f${i}t`),
