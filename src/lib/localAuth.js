@@ -47,7 +47,7 @@ export async function localSignUp(name, email, password) {
 
   let res
   try {
-    res = await fetch('/api/account?email=' + encodeURIComponent(em), {
+    res = await fetch('/api/storage?action=account&email=' + encodeURIComponent(em), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: em, displayName: name.trim(), salt, passHash }),
@@ -78,7 +78,7 @@ export async function localSignIn(email, password) {
 
   let res, data
   try {
-    res = await fetch('/api/account?email=' + encodeURIComponent(em))
+    res = await fetch('/api/storage?action=account&email=' + encodeURIComponent(em))
     data = await res.json().catch(() => ({}))
   } catch {
     const err = new Error('network-error')

@@ -116,8 +116,9 @@ export default async function handler(req, res) {
   }
 
   // ---- Account endpoints (after auth is configured) ----
-  const email = String(req.query.email || '').trim().toLowerCase()
-  if (email) {
+  if (req.query.action === 'account') {
+    const email = String(req.query.email || '').trim().toLowerCase()
+    if (!email) return res.status(400).json({ error: 'An email is required for account actions' })
     try {
       const path = accountPath(email)
       if (req.method === 'GET') {
