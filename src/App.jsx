@@ -8,6 +8,7 @@ import Dashboard from './components/Dashboard'
 import Settings from './components/Settings'
 import Footer from './components/Footer'
 import ParticleNetwork from './components/ParticleNetwork'
+import ChatWidget from './components/ChatWidget'
 
 function Shell() {
   const { authReady, toast } = useApp()
@@ -27,6 +28,7 @@ function Shell() {
         {view === 'login' && <Auth setView={setView} />}
         {view === 'dashboard' && <Dashboard />}
         <Footer setView={setView} />
+        <ChatWidget />
         {settingsOpen && <Settings onClose={() => setSettingsOpen(false)} />}
         <div className={`toast ${toast ? 'show' : ''}`}>{toast}</div>
       </div>

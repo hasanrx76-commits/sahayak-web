@@ -1,13 +1,14 @@
 # 🤖 Sahayak — Smart AI Voice Assistant
 
-A feature-rich, 100% free web app: 3D animated interface, voice-enabled AI assistant, personal notes, and task manager.
+A feature-rich, 100% free web app: futuristic particle network background, voice-enabled AI assistant, floating AI chatbot, personal notes, and task manager.
 
-**Stack:** React 19 + Vite · Three.js (react-three-fiber) · Firebase Auth + Firestore · Web Speech API · PWA
+**Stack:** React 19 + Vite · Vercel serverless API · Firebase Auth + Firestore · Web Speech API · PWA · Markdown chat
 
 ## ✨ Features
 - 🎙️ **Voice AI Assistant** — talk with the mic (Web Speech API), replies out loud (speech synthesis)
+- 💬 **Floating AI Chatbot** — bottom-right button, real-time streaming, Markdown + code blocks, answers website questions
 - 🧠 **Smart brain** — offline rules engine (time, date, math, jokes, motivation) + optional Gemini AI for unlimited answers
-- 🌍 **3D interactive hero** — Three.js globe, particles, stars
+- ✨ **Futuristic particle network** — glowing points connected by light that follow your mouse
 - 📝 **Personal Notes** + ✅ **Task Manager** — synced to your account
 - 🔐 **Login** — Google or email via Firebase Auth
 - 📱 **PWA** — installable, works offline
@@ -18,6 +19,21 @@ A feature-rich, 100% free web app: 3D animated interface, voice-enabled AI assis
 npm install
 npm run dev
 ```
+> The floating chatbot needs the API backend. To run it locally use `npx vercel dev` instead of `npm run dev`.
+
+## 💬 AI Chatbot setup (secure backend)
+
+The chat uses a Vercel serverless function (`api/chat.js`) so **API keys stay hidden** on the server. It supports Gemini (free) or OpenAI.
+
+1. Get a free Gemini key at [aistudio.google.com](https://aistudio.google.com) → **Get API key**
+2. In Vercel → project → **Settings → Environment Variables**, add:
+   ```
+   GEMINI_API_KEY=<your free key>
+   ```
+   (or `OPENAI_API_KEY` + optionally `OPENAI_MODEL` / `GEMINI_MODEL`)
+3. Redeploy (push to git). The floating chat button now answers questions about the website.
+
+Backend features: per-IP rate limiting (20 req/min), input validation, message-length clamps, streaming SSE, graceful errors. Answers are limited to the site knowledge base (`api/lib/knowledge.js`) and it politely declines when it does not know.
 
 ## 🚀 Publish on Vercel (free)
 
