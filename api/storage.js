@@ -56,6 +56,16 @@ function filePath(uid) {
   return `${DIR}/${key}.json`
 }
 
+// Stable uid derived from email (same account -> same uid on any device).
+function uidForEmail(email) {
+  return 'local-' + crypto.createHash('sha256').update(email + SECRET).digest('hex').slice(0, 10)
+}
+
+function accountPath(email) {
+  const key = crypto.createHash('sha256').update(email + SECRET).digest('hex')
+  return `accounts/${key}.json`
+}
+
 async function ghRequest(method, path, body) {
   const res = await fetch(`${GITHUB_API}/repos/${REPO}/contents/${path}?ref=${encodeURIComponent(BRANCH)}`, {
     method,
@@ -103,6 +113,39 @@ export default async function handler(req, res) {
 
   if (!configured()) {
     return res.status(501).json({ error: 'GitHub storage is not configured.' })
+  }
+
+  // ---- Account endpoints (after auth is configured) ----
+  const email = String(req.query.email || '').trim().toLowerCase()
+  if (email) {
+    try {
+      const path = accountPath(email)
+      if (req.method === 'GET') {
+        const file = await readFile(path)
+        return res.json({ account: file ? file.json : null })
+      }
+      if (req.method === 'POST') {
+        const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body
+        const existing = await readFile(path)
+        if (existing) {
+          return res.status(409).json({ error: 'email-taken' })
+        }
+        const uid = uidForEmail(email)
+        const account = {
+          uid,
+          email,
+          displayName: String(body.displayName || '').slice(0, 80) || email.split('@')[0],
+          salt: String(body.salt || ''),
+          passHash: String(body.passHash || ''),
+          createdAt: Date.now(),
+        }
+        await writeFile(path, account, null)
+        return res.json({ uid, email, displayName: account.displayName })
+      }
+    } catch (err) {
+      console.error('Account handler error:', err.message)
+      return res.status(502).json({ error: 'Failed to talk to GitHub storage.' })
+    }
   }
 
   const uid = String(req.query.uid || '').trim()

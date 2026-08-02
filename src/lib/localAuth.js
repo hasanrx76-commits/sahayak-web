@@ -1,39 +1,33 @@
-// Local account system: email/password sign-in stored in the browser (localStorage).
-// Used when Firebase is not configured. Data stays on this device only.
+// Account system backed by GitHub storage (api/storage.js).
+// Sign-up/sign-in accounts live in the GitHub repo, so a user can log in from
+// any device/browser with the same email + password. The session is cached in
+// localStorage so the user stays logged in on refresh.
 
-const USERS_KEY = 'sahayak_users'
 const SESSION_KEY = 'sahayak_session'
 
 const listeners = new Set()
 let current = null
 
-function readUsers() {
-  try {
-    return JSON.parse(localStorage.getItem(USERS_KEY) || '[]')
-  } catch {
-    return []
-  }
-}
-
-function writeUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users))
-}
-
-function uid() {
-  try {
-    return crypto.randomUUID ? crypto.randomUUID().slice(0, 8) : Math.random().toString(36).slice(2, 10)
-  } catch {
-    return Math.random().toString(36).slice(2, 10)
-  }
-}
-
-function toPublic(u) {
-  return { uid: u.uid, email: u.email, displayName: u.displayName, isLocal: true }
-}
-
-function emit(user) {
+function persist(user) {
   current = user
+  try {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(user))
+  } catch {
+    /* ignore */
+  }
   listeners.forEach((fn) => fn(user))
+}
+
+export function getSessionUser() {
+  if (current) return current
+  try {
+    const raw = localStorage.getItem(SESSION_KEY)
+    if (!raw) return null
+    current = JSON.parse(raw)
+  } catch {
+    current = null
+  }
+  return current
 }
 
 async function sha256(text) {
@@ -46,67 +40,76 @@ async function sha256(text) {
   return 'h' + h.toString(16)
 }
 
-export function getSessionUser() {
-  if (current) return current
-  try {
-    const id = localStorage.getItem(SESSION_KEY)
-    if (!id) return null
-    const u = readUsers().find((x) => x.uid === id)
-    current = u ? toPublic(u) : null
-  } catch {
-    current = null
-  }
-  return current
-}
-
 export async function localSignUp(name, email, password) {
-  const users = readUsers()
   const em = email.trim().toLowerCase()
-  if (users.some((u) => u.email === em)) {
-    const err = new Error('email-already-in-use')
+  const salt = Math.random().toString(36).slice(2, 10)
+  const passHash = await sha256(salt + ':' + password)
+
+  let res
+  try {
+    res = await fetch('/api/account?email=' + encodeURIComponent(em), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: em, displayName: name.trim(), salt, passHash }),
+    })
+  } catch {
+    const err = new Error('network-error')
+    err.code = 'auth/network-request-failed'
+    throw err
+  }
+  if (res.status === 409) {
+    const err = new Error('email-taken')
     err.code = 'auth/email-already-in-use'
     throw err
   }
-  const salt = Math.random().toString(36).slice(2, 10)
-  const passHash = await sha256(salt + ':' + password)
-  const user = {
-    uid: 'local-' + uid(),
-    displayName: name.trim() || em.split('@')[0],
-    email: em,
-    salt,
-    passHash,
-    createdAt: Date.now(),
+  if (!res.ok) {
+    const err = new Error('signup-failed')
+    err.code = 'auth/signup-failed'
+    throw err
   }
-  users.push(user)
-  writeUsers(users)
-  localStorage.setItem(SESSION_KEY, user.uid)
-  emit(toPublic(user))
-  return toPublic(user)
+  const data = await res.json()
+  const user = { uid: data.uid, email: em, displayName: data.displayName, isLocal: true }
+  persist(user)
+  return user
 }
 
 export async function localSignIn(email, password) {
   const em = email.trim().toLowerCase()
-  const u = readUsers().find((x) => x.email === em)
-  if (!u) {
+
+  let res, data
+  try {
+    res = await fetch('/api/account?email=' + encodeURIComponent(em))
+    data = await res.json().catch(() => ({}))
+  } catch {
+    const err = new Error('network-error')
+    err.code = 'auth/network-request-failed'
+    throw err
+  }
+  const acct = data.account
+  if (!acct) {
     const err = new Error('user-not-found')
     err.code = 'auth/user-not-found'
     throw err
   }
-  const passHash = await sha256(u.salt + ':' + password)
-  if (passHash !== u.passHash) {
+  const passHash = await sha256(acct.salt + ':' + password)
+  if (passHash !== acct.passHash) {
     const err = new Error('wrong-password')
     err.code = 'auth/wrong-password'
     throw err
   }
-  localStorage.setItem(SESSION_KEY, u.uid)
-  const pub = toPublic(u)
-  emit(pub)
-  return pub
+  const user = { uid: acct.uid, email: em, displayName: acct.displayName, isLocal: true }
+  persist(user)
+  return user
 }
 
 export function localSignOut() {
-  localStorage.removeItem(SESSION_KEY)
-  emit(null)
+  try {
+    localStorage.removeItem(SESSION_KEY)
+  } catch {
+    /* ignore */
+  }
+  current = null
+  listeners.forEach((fn) => fn(null))
 }
 
 export function subscribeLocalAuth(fn) {
@@ -117,6 +120,9 @@ export function subscribeLocalAuth(fn) {
 
 if (typeof window !== 'undefined') {
   window.addEventListener('storage', (e) => {
-    if (e.key === SESSION_KEY || e.key === USERS_KEY) emit(getSessionUser())
+    if (e.key === SESSION_KEY) {
+      current = null
+      listeners.forEach((fn) => fn(getSessionUser()))
+    }
   })
 }
