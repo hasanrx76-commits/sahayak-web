@@ -9,7 +9,7 @@ const Res = ({ rows }) => (
 export const P3_CATEGORIES = [
   { id: 'business', icon: '🏪', tools: ['profit', 'markup', 'breakeven', 'roi', 'change', 'unitprice', 'commission', 'billsplit'] },
   { id: 'fitness', icon: '🏃', tools: ['macros', 'onerm', 'pace', 'steps', 'deficit', 'bodyfat'] },
-  { id: 'developer', icon: '💻', tools: ['baseconv', 'hexrgb', 'ascii', 'base64', 'urlcode', 'jsonfmt', 'subnet', 'storage'] },
+  { id: 'developer', icon: '💻', tools: ['baseconv', 'hexrgb', 'ascii', 'base64', 'urlcode', 'jsonfmt', 'subnet', 'storage', 'website'] },
   { id: 'farmer', icon: '🧑‍🌾', tools: ['seed', 'fertilizer', 'pesticide', 'yield'] },
   { id: 'music', icon: '🎵', tools: ['metronome', 'bpmms', 'notefreq', 'interval'] },
 ]
@@ -17,7 +17,7 @@ export const P3_CATEGORIES = [
 export const P3_TAB = {
   profit: '💰', markup: '🏷️', breakeven: '⚖️', roi: '🎯', change: '💵', unitprice: '🔎', commission: '🤝', billsplit: '💳',
   macros: '🥗', onerm: '🏋️', pace: '🏃', steps: '👟', deficit: '⏳', bodyfat: '🧮',
-  baseconv: '💽', hexrgb: '🎨', ascii: '🔣', base64: '🅱️', urlcode: '🔗', jsonfmt: '📄', subnet: '🕸️', storage: '💾',
+  baseconv: '💽', hexrgb: '🎨', ascii: '🔣', base64: '🅱️', urlcode: '🔗', jsonfmt: '📄', subnet: '🕸️', storage: '💾', website: '🌐',
   seed: '🌱', fertilizer: '🌾', pesticide: '🧪', yield: '🚜',
   metronome: '🥁', bpmms: '🎵', notefreq: '🎼', interval: '🎶',
 }
@@ -28,7 +28,7 @@ export const P3_STRINGS = {
     tabs: {
       profit: 'Profit', markup: 'Markup', breakeven: 'Break-even', roi: 'ROI', change: 'Change', unitprice: 'Unit Price', commission: 'Commission', billsplit: 'Bill Split',
       macros: 'Macros', onerm: '1RM', pace: 'Pace', steps: 'Steps', deficit: 'Deficit', bodyfat: 'Body Fat',
-      baseconv: 'Base Conv', hexrgb: 'HEX/RGB', ascii: 'ASCII', base64: 'Base64', urlcode: 'URL', jsonfmt: 'JSON', subnet: 'Subnet', storage: 'Storage',
+      baseconv: 'Base Conv', hexrgb: 'HEX/RGB', ascii: 'ASCII', base64: 'Base64', urlcode: 'URL', jsonfmt: 'JSON', subnet: 'Subnet', storage: 'Storage', website: 'Website Builder',
       seed: 'Seed', fertilizer: 'Fertilizer', pesticide: 'Pesticide', yield: 'Yield',
       metronome: 'Metronome', bpmms: 'BPM→ms', notefreq: 'Note Freq', interval: 'Interval',
     },
@@ -62,13 +62,14 @@ export const P3_STRINGS = {
     bpmms: { title: 'BPM ↔ ms', bpm: 'BPM', ms: 'ms', whole: 'Whole', half: 'Half', quarter: 'Quarter', eighth: 'Eighth', sixteenth: 'Sixteenth' },
     notefreq: { title: 'Note Frequency', note: 'Note', freq: 'Frequency (Hz)', or: 'or', fromFreq: 'Frequency → Note' },
     interval: { title: 'Interval Finder', n1: 'Note 1', n2: 'Note 2', semis: 'Semitones', name: 'Interval' },
+    website: { title: 'Website Builder', prompt: 'Describe the website you want', placeholder: 'e.g. "A modern portfolio site for a photographer with dark mode", dark mode toggle, and contact form', generate: 'Generate Website', generating: 'Building…', download: 'Download HTML', clear: 'Clear', preview: 'Live Preview', desc: 'Describe what you want and get a complete HTML file instantly.' },
   },
   hi: {
     cats: { business: 'व्यापार', fitness: 'फिटनेस', developer: 'डेवलपर', farmer: 'किसान', music: 'संगीत' },
     tabs: {
       profit: 'लाभ', markup: 'मार्कअप', breakeven: 'ब्रेक-ईवन', roi: 'ROI', change: 'छुट्टा', unitprice: 'यूनिट मूल्य', commission: 'कमीशन', billsplit: 'बिल बांटें',
       macros: 'मैक्रोज़', onerm: '1RM', pace: 'गति', steps: 'कदम', deficit: 'कटौती', bodyfat: 'शरीर में चर्बी',
-      baseconv: 'बेस कन्वर्ट', hexrgb: 'HEX/RGB', ascii: 'ASCII', base64: 'Base64', urlcode: 'URL', jsonfmt: 'JSON', subnet: 'सबनेट', storage: 'स्टोरेज',
+      baseconv: 'बेस कन्वर्ट', hexrgb: 'HEX/RGB', ascii: 'ASCII', base64: 'Base64', urlcode: 'URL', jsonfmt: 'JSON', subnet: 'सबनेट', storage: 'स्टोरेज', website: 'वेबसाइट बिल्डर',
       seed: 'बीज', fertilizer: 'खाद', pesticide: 'कीटनाशक', yield: 'उपज',
       metronome: 'मेट्रोनोम', bpmms: 'BPM→ms', notefreq: 'नोट फ्रीक्वेंसी', interval: 'अंतराल',
     },
@@ -102,6 +103,7 @@ export const P3_STRINGS = {
     bpmms: { title: 'BPM ↔ ms', bpm: 'BPM', ms: 'ms', whole: 'पूरा', half: 'आधा', quarter: 'चौथाई', eighth: 'आठवां', sixteenth: 'सोलहवां' },
     notefreq: { title: 'नोट फ्रीक्वेंसी', note: 'नोट', freq: 'फ्रीक्वेंसी (Hz)', or: 'या', fromFreq: 'फ्रीक्वेंसी → नोट' },
     interval: { title: 'अंतराल पहचान', n1: 'नोट 1', n2: 'नोट 2', semis: 'सेमीटोन', name: 'अंतराल' },
+    website: { title: 'वेबसाइट बिल्डर', prompt: 'मनचाही वेबसाइट का वर्णन करें', placeholder: 'उदाहरण: फोटोग्राफर के लिए डार्क मोड वाला पोर्टफोलियो', generate: 'वेबसाइट बनाएं', generating: 'निर्माण हो रहा…', download: 'HTML डाउनलोड', clear: 'साफ़ करें', preview: 'लाइव प्रीव्यू', desc: 'विवरण दें और तुरंत पूरी HTML फाइल पाएं।' },
   },
 }
 
@@ -700,10 +702,92 @@ function Interval({ s }) {
   </div>
 }
 
+function WebsiteBuilder({ s }) {
+  const [prompt, setPrompt] = useState('')
+  const [html, setHtml] = useState('')
+  const [generating, setGenerating] = useState(false)
+  const iframeRef = useRef(null)
+
+  const buildPrompt = (userPrompt) => `You are an expert web developer. Create a complete, self-contained single-file HTML page based on this request: "${userPrompt}"
+
+Requirements:
+- Output ONLY the complete HTML code, no markdown, no explanations
+- Include <!DOCTYPE html>, <html>, <head>, <body>
+- Embed all CSS in <style> tag in <head>
+- Embed all JavaScript in <script> tag at end of <body>
+- Make it responsive, modern, accessible
+- Use semantic HTML5
+- Include a nice color scheme
+- Add subtle animations/transitions
+- Ensure it works as a standalone file when saved as .html`
+
+  const generate = async () => {
+    if (!prompt.trim()) return
+    setGenerating(true)
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: buildPrompt(prompt), history: [] })
+      })
+      const data = await response.json()
+      let code = data.reply || ''
+      code = code.replace(/^```html\n?/i, '').replace(/^```\n?/i, '').replace(/```$/i, '').trim()
+      setHtml(code)
+      setTimeout(() => {
+        if (iframeRef.current) {
+          iframeRef.current.srcdoc = code
+        }
+      }, 100)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setGenerating(false)
+    }
+  }
+
+  const download = () => {
+    if (!html) return
+    const blob = new Blob([html], { type: 'text/html' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'website.html'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  return <div className="card tool-card"><h3>🌐 {s.website.title}</h3>
+    <p style={{ fontSize: 13, color: 'var(--text-dim)', marginBottom: 12 }}>{s.website.desc}</p>
+    <div className="tool-grid">
+      <label className="field" style={{ gridColumn: '1 / -1' }}>
+        <span>{s.website.prompt}</span>
+        <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} rows={4} placeholder={s.website.placeholder} style={{ width: '100%', padding: 10, borderRadius: 8, border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', fontFamily: 'inherit', resize: 'vertical' }} />
+      </label>
+    </div>
+    <div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}>
+      <button className="btn btn-primary" onClick={generate} disabled={generating || !prompt.trim()}>
+        {generating ? s.website.generating : s.website.generate}
+      </button>
+      <button className="btn" onClick={download} disabled={!html}>
+        💾 {s.website.download}
+      </button>
+      <button className="btn" onClick={() => { setPrompt(''); setHtml(''); if (iframeRef.current) iframeRef.current.srcdoc = '' }}>
+        🗑️ {s.website.clear}
+      </button>
+    </div>
+    {html && (
+      <div style={{ marginTop: 16, border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden', background: 'white' }}>
+        <iframe ref={iframeRef} style={{ width: '100%', height: '400px', border: 'none', background: 'white' }} sandbox="allow-scripts allow-same-origin allow-forms allow-popups" title={s.website.preview} />
+      </div>
+    )}
+  </div>
+}
+
 export const P3_RENDER = {
   profit: Profit, markup: Markup, breakeven: Breakeven, roi: ROI, change: Change, unitprice: UnitPrice, commission: Commission, billsplit: BillSplit,
   macros: Macros, onerm: OneRM, pace: Pace, steps: Steps, deficit: Deficit, bodyfat: BodyFat,
-  baseconv: BaseConv, hexrgb: HexRgb, ascii: Ascii, base64: Base64, urlcode: UrlCode, jsonfmt: JsonFmt, subnet: Subnet, storage: Storage,
+  baseconv: BaseConv, hexrgb: HexRgb, ascii: Ascii, base64: Base64, urlcode: UrlCode, jsonfmt: JsonFmt, subnet: Subnet, storage: Storage, website: WebsiteBuilder,
   seed: Seed, fertilizer: Fertilizer, pesticide: Pesticide, yield: Yield,
   metronome: Metronome, bpmms: BpmMs, notefreq: Notefreq, interval: Interval,
 }
